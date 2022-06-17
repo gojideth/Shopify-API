@@ -54,6 +54,28 @@ const createProduct = async (name, price, description, quantity) => {
   }
 };
 
+const createShoppingCart = async (quantity, productId) => {
+  try {
+    const shoppingCart = await prisma.shoppingCart.create({
+      data: {
+        quantity: quantity,
+        product: {
+          connect: {
+            id: productId,
+          },
+        },
+      },
+    });
+    return shoppingCart;
+  } catch (error) {
+    console.error(error.message);
+  }
+  return {
+    status: "error",
+    message: "The product does not exist or the quantity is not valid",
+  }
+}
+
 module.exports = {
   createProduct,
   getAllProducts,
