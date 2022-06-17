@@ -10,42 +10,42 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Product{
-  id Int @id @default(autoincrement())
-  name String @db.VarChar(100)
-  price Int 
-  description String @db.Text
-  quantity Int
+model Product {
+  id             Int            @id @default(autoincrement())
+  name           String         @db.VarChar(100)
+  price          Int
+  description    String         @db.Text
+  quantity       Int
   shoppingCartId ShoppingCart[]
+
   @@map("products")
 }
 
-model ShoppingCart{
-  id Int @id @default(autoincrement())  
-  quantity Int
-  product Product @relation(fields: [productId], references: [id])
-  productId Int
+model ShoppingCart {
+  id         Int        @id @default(autoincrement())
+  quantity   Int
+  product    Product    @relation(fields: [productId], references: [id])
+  productId  Int
   checkoutId Checkout[]
+
   @@map("shopping_carts")
 }
 
-model Checkout{
-  id Int @id @default(autoincrement())
-  userId Int
-  quantity Int
-  shoppingCart ShoppingCart @relation(fields: [shoppingCartId], references: [id])
+model Checkout {
+  id             Int          @id @default(autoincrement())
+  userId         Int
+  shoppingCart   ShoppingCart @relation(fields: [shoppingCartId], references: [id])
   shoppingCartId Int
-  coupon Coupon?
+  coupon         Coupon       @relation(fields: [couponId], references: [id])
+  couponId       Int
+
   @@map("checkouts")
 }
 
-model Coupon{
-  id Int @id @default(autoincrement())
-  code String @db.VarChar(100)
+model Coupon {
+  id       Int    @id @default(autoincrement())
+  code     String @db.VarChar(100)
   discount Int
-  checkout Checkout @relation(fields: [checkoutId], references: [id])
-  checkoutId Int
   @@map("coupons")
+  Checkout Checkout[]
 }
-
-

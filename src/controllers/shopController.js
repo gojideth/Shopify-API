@@ -45,4 +45,24 @@ const createProduct = async (req,res)=>{
   res.send({status: 'success', data: await product});
 }
 
-module.exports={getAllProducts, getProductById, getProductByName, getShopById, createProduct};
+const createShoppingCart = async (req,res)=>{
+  const quantity = Number(req.body.quantity);
+  const productId = Number( req.body.productId);
+  if(!quantity || !productId){
+    return res.status(400).send({status: 'error', message: 'quantity and productId are required'});
+  }
+  const shoppingCart = shopServices.createShoppingCart(quantity, productId);
+  res.send({status: 'success', data: await shoppingCart});
+}
+
+const createCoupon = async (req,res)=>{
+  const code = req.body.code;
+  const discount = Number(req.body.discount);
+  if(!code || !discount || discount < 0){
+    return res.status(400).send({status: 'error', message: 'code and discount are required'});
+  }
+  const coupon = shopServices.createCoupon(code, discount);
+  res.send({status: 'success', data: await coupon});
+}
+
+module.exports={getAllProducts, getProductById, getProductByName, getShopById, createProduct, createShoppingCart, createCoupon};

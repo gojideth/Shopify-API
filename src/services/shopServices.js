@@ -25,6 +25,15 @@ const createProduct = async (name, price, description, quantity) => {
   return product;
 }
 
+const createShoppingCart = async (quantity, productId) => {
+  const shoppingCart = await Shop.createShoppingCart(quantity, productId);
+  return shoppingCart;
+}
+
+const createCoupon = async (name, discount, description, quantity) => {
+  const coupon = await Shop.createCoupon(name, discount, description, quantity);
+  return coupon;
+}
 
 
-module.exports = {createProduct, getAllProducts, getProductById, getProductByName, getShopById};
+module.exports = {createProduct, getAllProducts, getProductById, getProductByName, getShopById, createShoppingCart, createCoupon};
